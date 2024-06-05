@@ -1,37 +1,46 @@
 import { Helmet } from 'react-helmet-async'
+import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useForm } from 'react-hook-form'
-import { toast } from "sonner"
 
 const signInForm = z.object({
-  email: z.string().email()
+  email: z.string().email(),
 })
 
 type SignInForm = z.infer<typeof signInForm>
 
 export function SignIn() {
-  const { register, handleSubmit, formState: { isSubmitting } } = useForm<SignInForm>()
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<SignInForm>()
 
   async function handleSignIn(data: SignInForm) {
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise((resolve) => setTimeout(resolve, 2000))
 
     console.log(data)
 
-    toast.success("deu tudo certo meu chapa", {
+    toast.success('deu tudo certo meu chapa', {
       action: {
-        label: "Reenviar",
-        onClick: () => handleSignIn(data)
-      }
+        label: 'Reenviar',
+        onClick: () => handleSignIn(data),
+      },
     })
   }
 
   return (
     <>
       <Helmet title="Login" />
+
+      <Button variant="ghost" asChild className="absolute right-8 top-8">
+        <Link to="/sign-up">Novo Estabelecimento</Link>
+      </Button>
 
       <div className="p-8">
         <div className="flex w-[350px] flex-col justify-center gap-6">
@@ -47,7 +56,7 @@ export function SignIn() {
           <form className="space-y-4" onSubmit={handleSubmit(handleSignIn)}>
             <div className="space-y-2">
               <Label htmlFor="email">Seu e-mail</Label>
-              <Input id="email" type="email" {...register('email')}/>
+              <Input id="email" type="email" {...register('email')} />
             </div>
 
             <Button className="w-full" type="submit" disabled={isSubmitting}>
